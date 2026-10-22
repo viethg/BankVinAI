@@ -1,0 +1,188 @@
+{
+  "course_title": "Khóa Học AI & Kỹ Thuật Agentic (15 Days)",
+  "total_days": 15,
+  "total_questions": 1679,
+  "total_solved": 1679,
+  "days": [
+    {
+      "day_id": "day01",
+      "day_label": "Day 01",
+      "public_code": "D01",
+      "title": "Nền tảng LLM API, Token & Cơ chế Transformer",
+      "stats": {
+        "total_questions": 150,
+        "solved_questions": 150,
+        "total_kcs": 57,
+        "core_kcs": 42
+      }
+    },
+    {
+      "day_id": "day02",
+      "day_label": "Day 02",
+      "public_code": "D03",
+      "title": "AI Product & Ứng dụng LLM trong Sản phẩm",
+      "stats": {
+        "total_questions": 121,
+        "solved_questions": 121,
+        "total_kcs": 46,
+        "core_kcs": 30
+      }
+    },
+    {
+      "day_id": "day03",
+      "day_label": "Day 03",
+      "public_code": "D04",
+      "title": "Chatbot vs ReAct Agent & Phân bổ Năng lực",
+      "stats": {
+        "total_questions": 84,
+        "solved_questions": 84,
+        "total_kcs": 37,
+        "core_kcs": 29
+      }
+    },
+    {
+      "day_id": "day04",
+      "day_label": "Day 04",
+      "public_code": "D08",
+      "title": "Prompt Engineering & Kỹ thuật Tool Calling",
+      "stats": {
+        "total_questions": 88,
+        "solved_questions": 88,
+        "total_kcs": 40,
+        "core_kcs": 30
+      }
+    },
+    {
+      "day_id": "day05",
+      "day_label": "Day 05",
+      "public_code": "D09",
+      "title": "Kiến trúc Agent & Luồng Quyết định",
+      "stats": {
+        "total_questions": 78,
+        "solved_questions": 78,
+        "total_kcs": 38,
+        "core_kcs": 22
+      }
+    },
+    {
+      "day_id": "day06",
+      "day_label": "Day 06",
+      "public_code": "D10",
+      "title": "Reasoning & Cơ chế Bộ nhớ của Agent",
+      "stats": {
+        "total_questions": 53,
+        "solved_questions": 53,
+        "total_kcs": 24,
+        "core_kcs": 24
+      }
+    },
+    {
+      "day_id": "day07",
+      "day_label": "Day 07",
+      "public_code": "D11",
+      "title": "Data Foundations, Embedding & Vector Store",
+      "stats": {
+        "total_questions": 108,
+        "solved_questions": 108,
+        "total_kcs": 42,
+        "core_kcs": 42
+      }
+    },
+    {
+      "day_id": "day08",
+      "day_label": "Day 08",
+      "public_code": "D12",
+      "title": "RAG Pipeline & Kỹ thuật Tìm kiếm Ngữ nghĩa",
+      "stats": {
+        "total_questions": 112,
+        "solved_questions": 112,
+        "total_kcs": 51,
+        "core_kcs": 51
+      }
+    },
+    {
+      "day_id": "day09",
+      "day_label": "Day 09",
+      "public_code": "D13",
+      "title": "Multi-Agent MCP & Giao thức Agent-to-Agent (A2A)",
+      "stats": {
+        "total_questions": 107,
+        "solved_questions": 107,
+        "total_kcs": 47,
+        "core_kcs": 47
+      }
+    },
+    {
+      "day_id": "day10",
+      "day_label": "Day 10",
+      "public_code": "D14",
+      "title": "Data Pipeline Observability & Theo dõi Hệ thống",
+      "stats": {
+        "total_questions": 112,
+        "solved_questions": 112,
+        "total_kcs": 51,
+        "core_kcs": 51
+      }
+    },
+    {
+      "day_id": "day11",
+      "day_label": "Day 11",
+      "public_code": "D15",
+      "title": "Guardrails, HITL & AI Safety (VinBank)",
+      "stats": {
+        "total_questions": 122,
+        "solved_questions": 122,
+        "total_kcs": 57,
+        "core_kcs": 57
+      }
+    },
+    {
+      "day_id": "day12",
+      "day_label": "Day 12",
+      "public_code": "D16",
+      "title": "Cloud Services & Triển khai Ứng dụng LLM",
+      "stats": {
+        "total_questions": 159,
+        "solved_questions": 159,
+        "total_kcs": 73,
+        "core_kcs": 73
+      }
+    },
+    {
+      "day_id": "day13",
+      "day_label": "Day 13",
+      "public_code": "D17",
+      "title": "Monitoring, Logging & Vận hành LLMOps",
+      "stats": {
+        "total_questions": 137,
+        "solved_questions": 137,
+        "total_kcs": 61,
+        "core_kcs": 61
+      }
+    },
+    {
+      "day_id": "day14",
+      "day_label": "Day 14",
+      "public_code": "D18",
+      "title": "AI Evaluation, Trích xuất Metrics & Benchmarking",
+      "stats": {
+        "total_questions": 126,
+        "solved_questions": 126,
+        "total_kcs": 62,
+        "core_kcs": 62
+      }
+    },
+    {
+      "day_id": "day15",
+      "day_label": "Day 15",
+      "public_code": "D19",
+      "title": "Triển khai Thực tế & Định hướng Dự án AI",
+      "stats": {
+        "total_questions": 122,
+        "solved_questions": 122,
+        "total_kcs": 62,
+        "core_kcs": 62
+      }
+    }
+  ]
+}

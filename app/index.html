@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BankAI — Hệ Thống Ôn Tập & Khảo Thí Kiến Thức AI Cục Bộ (Day 01 - 15)</title>
+  <meta name="description" content="Nền tảng ôn tập tương tác offline 100% dành cho kỹ sư AI: Nền tảng LLM, RAG Pipeline, Agentic Loop, MCP, Observability và Triển khai thực tế.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Local Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20261021_contrast_v4">
+</head>
+<body>
+  <!-- Container tổng -->
+  <div class="app-layout" id="app-layout">
+    
+    <!-- SIDEBAR BÊN TRÁI -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <div class="logo-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="brand-info">
+            <span class="brand-name">BankAI Study</span>
+            <span class="brand-badge">Offline 100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thống kê tổng quan -->
+      <div class="sidebar-stats-card">
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-label">Tiến độ tổng</span>
+            <span class="stat-value" id="global-progress-text">0%</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Số câu đúng</span>
+            <span class="stat-value text-emerald" id="global-score-text">0/0</span>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="global-progress-bar" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Danh sách 15 Day -->
+      <div class="sidebar-nav-title">
+        <span>LỘ TRÌNH 15 NGÀY HỌC</span>
+        <span class="day-count-badge">15 Days</span>
+      </div>
+
+      <nav class="days-list" id="days-list" aria-label="Danh sách các ngày học">
+        <!-- Render động từ JS -->
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Đổi giao diện Sáng / Tối">
+          <span class="theme-icon-dark">🌙</span>
+          <span class="theme-icon-light">☀️</span>
+          <span class="theme-text">Giao diện: Tối</span>
+        </button>
+        <div class="sidebar-backup-actions">
+          <button class="backup-btn" id="export-backup-btn" title="Xuất file sao lưu tiến độ học tập (JSON) để lưu trữ an toàn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Xuất sao lưu</span>
+          </button>
+          <button class="backup-btn" id="import-backup-btn" title="Khôi phục tiến độ học tập từ file JSON đã sao lưu">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span>Nhập sao lưu</span>
+          </button>
+          <input type="file" id="import-backup-file" accept=".json" style="display: none">
+        </div>
+      </div>
+    </aside>
+
+    <!-- KHU VỰC NỘI DUNG CHÍNH (MAIN CONTENT) -->
+    <main class="main-content" id="main-content">
+      
+      <!-- Top Sticky Header -->
+      <header class="top-navbar" id="top-navbar">
+        <div class="day-header-meta">
+          <div class="day-badge-wrap">
+            <span class="day-code-pill" id="current-day-code">D01</span>
+            <span class="day-status-pill" id="current-day-status">Đang tải...</span>
+            <span class="save-status-pill" id="save-status-pill" title="Tiến độ học tập và tick xanh được tự động lưu vào ổ cứng máy tính">
+              <span class="save-status-dot"></span>
+              <span class="save-status-text" id="save-status-text">Đã lưu tự động</span>
+            </span>
+          </div>
+          <h1 class="current-day-title" id="current-day-title">Nền tảng LLM API, Token & Cơ chế Transformer</h1>
+        </div>
+
+        <div class="header-actions">
+          <!-- Bộ chuyển Tab chính -->
+          <div class="tab-switcher" role="tablist">
+            <button class="tab-btn active" id="tab-quiz" role="tab" aria-selected="true" data-tab="quiz">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+              <span>Làm Quiz</span>
+              <span class="tab-counter" id="quiz-count-badge">0</span>
+            </button>
+            <button class="tab-btn" id="tab-knowledge" role="tab" aria-selected="false" data-tab="knowledge">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+              <span>Tổng hợp kiến thức</span>
+              <span class="tab-counter" id="kc-count-badge">0</span>
+            </button>
+            <button class="tab-btn" id="tab-exam" role="tab" aria-selected="false" data-tab="exam">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Thi thử</span>
+              <span class="tab-counter exam-counter-badge" id="exam-badge">Mới</span>
+            </button>
+          </div>
+
+          <!-- Nút Ô Mở Slide Trực Tiếp -->
+          <button class="open-slide-btn" id="header-slide-btn" type="button" title="Mở Slide PDF của Day này trong tab mới">
+            <svg class="pdf-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span class="slide-btn-text" id="header-slide-text">Mở Slide Day 01 ↗</span>
+          </button>
+
+          <!-- Nút Làm lại Day này -->
+          <button class="reset-day-btn" id="reset-day-btn" title="Xóa toàn bộ câu trả lời của Day này để làm lại từ đầu">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10"></polyline>
+              <polyline points="23 20 23 14 17 14"></polyline>
+              <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+            </svg>
+            <span>Làm lại</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- VÙNG NỘI DUNG VIEW -->
+      <div class="content-body" id="content-body">
+        
+        <!-- ================= VIEW 1: LÀM QUIZ (CONTINUOUS SCROLL) ================= -->
+        <section class="tab-view active" id="quiz-view" role="tabpanel" aria-labelledby="tab-quiz">
+          
+          <!-- Filter Bar của Quiz -->
+          <div class="quiz-controls-bar">
+            <div class="quiz-info-pills">
+              <span class="filter-pill active" data-filter="all">Tất cả (<span id="filter-all-count">0</span>)</span>
+              <span class="filter-pill" data-filter="objective">🎯 Trắc nghiệm (<span id="filter-objective-count">0</span>)</span>
+              <span class="filter-pill highlight-shorttext" data-filter="short_text">✍️ Tự luận ngắn (<span id="filter-shorttext-count">0</span>)</span>
+              <span class="filter-pill" data-filter="unanswered">Chưa làm (<span id="filter-unanswered-count">0</span>)</span>
+              <span class="filter-pill" data-filter="correct">Đã hoàn thành (<span id="filter-correct-count">0</span>)</span>
+              <span class="filter-pill" data-filter="incorrect">Cần xem lại (<span id="filter-incorrect-count">0</span>)</span>
+            </div>
+            
+            <div class="quiz-day-progress">
+              <span class="progress-info-text" id="day-progress-text">Đã hoàn thành 0/0 câu (0%)</span>
+              <div class="day-progress-mini">
+                <div class="day-progress-fill" id="day-progress-bar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danh sách câu hỏi cuộn dài liên tục -->
+          <div class="questions-stream" id="questions-stream">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Đang nạp bộ câu hỏi...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= VIEW 2: TỔNG HỢP KIẾN THỨC ================= -->
+        <section class="tab-view" id="knowledge-view" role="tabpanel" aria-labelledby="tab-knowledge">
+          
+          <!-- Thanh điều khiển & Lọc của Kiến thức -->
+          <div class="kc-controls-bar">
+            <!-- Hàng 1: Tìm kiếm & Lọc cốt lõi -->
+            <div class="kc-search-row">
+              <div class="search-input-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="kc-search-input" placeholder="Tìm kiếm khái niệm, từ khóa, mục tiêu ôn tập..." autocomplete="off">
+              </div>
+
+              <label class="core-filter-toggle">
+                <input type="checkbox" id="kc-core-only-checkbox">
+                <span class="toggle-label">⭐ Chỉ hiện Kiến thức cốt lõi</span>
+              </label>
+            </div>
+
+            <!-- Hàng 2: Bộ lọc Cờ vàng / Tick xanh & Tiến độ hoàn thành của Day -->
+            <div class="kc-filter-pills-row">
+              <div class="kc-info-pills">
+                <span class="kc-filter-pill active" data-kc-filter="all">Tất cả (<span id="kc-filter-all-count">0</span>)</span>
+                <span class="kc-filter-pill filter-flagged" data-kc-filter="flagged">🚩 Cần xem lại (<span id="kc-filter-flagged-count">0</span>)</span>
+                <span class="kc-filter-pill filter-done" data-kc-filter="done">✅ Đã hiểu (<span id="kc-filter-done-count">0</span>)</span>
+              </div>
+
+              <div class="kc-day-progress">
+                <span class="kc-progress-text" id="kc-day-progress-text">Đã hoàn thành: 0/0 mục (0%)</span>
+                <div class="kc-day-progress-mini">
+                  <div class="kc-day-progress-fill" id="kc-day-progress-bar" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danh sách các Group và Thẻ kiến thức -->
+          <div class="kc-groups-container" id="kc-groups-container">
+            <!-- Render động từ JS -->
+          </div>
+        </section>
+
+        <!-- ================= VIEW 3: THI THỬ (PRACTICE EXAM) ================= -->
+        <section class="tab-view" id="exam-view" role="tabpanel" aria-labelledby="tab-exam">
+          
+          <!-- 1. MÀN HÌNH CHÍNH (SẢNH THI THỬ & THỐNG KÊ) -->
+          <div class="exam-screen" id="exam-lobby-screen">
+            <div class="exam-hero-banner">
+              <div class="exam-hero-content">
+                <div class="exam-hero-badge">
+                  <span class="pulse-dot-cyan"></span>
+                  <span>Phòng Khảo Thí Offline BankAI</span>
+                </div>
+                <h2 class="exam-hero-title">Thi Thử Khảo Thí Kiến Thức AI</h2>
+                <p class="exam-hero-desc">
+                  Luyện tập áp lực phòng thi với bộ đếm giờ mô phỏng. Đề thi được bốc ngẫu nhiên từ ngân hàng hơn 1600 câu hỏi thuộc 15 Day, không hiển thị đáp án trong lúc làm để rèn luyện phản xạ thực tế.
+                </p>
+              </div>
+            </div>
+
+            <!-- Lựa chọn Loại đề thi -->
+            <div class="exam-modes-grid">
+              
+              <!-- Card Đề Full -->
+              <div class="exam-mode-card card-full" id="exam-start-full-card">
+                <div class="mode-header">
+                  <div class="mode-badge-wrap">
+                    <span class="mode-pill mode-pill-full">BÀI THI TOÀN DIỆN</span>
+                    <span class="mode-timer-pill">⏱️ 31 phút</span>
+                  </div>
+                  <h3 class="mode-title">Full Exam — 40 Câu Chuẩn Khảo Thí</h3>
+                  <p class="mode-desc">
+                    Mô phỏng bài thi khảo thí tổng thể bao quát toàn bộ 15 Day. Mỗi Day lấy đúng 2 hoặc 3 câu ngẫu nhiên (10 Day x 3 câu + 5 Day x 2 câu = 40 câu), bao gồm từ 0 đến 4 câu tự luận ngẫu nhiên.
+                  </p>
+                </div>
+
+                <div class="mode-features-list">
+                  <div class="mode-feature-item">
+                    <span class="feat-icon">🎯</span>
+                    <span><strong>40 câu hỏi</strong> bốc ngẫu nhiên phủ kín 15 Day</span>
+                  </div>
+                  <div class="mode-feature-item">
+                    <span class="feat-icon">📅</span>
+                    <span><strong>Mỗi Day 2-3 câu</strong> (đáp ứng đúng chuẩn phân bổ)</span>
+                  </div>
+                  <div class="mode-feature-item">
+                    <span class="feat-icon">✍️</span>
+                    <span><strong>Tối đa 4 câu tự luận</strong> (ngẫu nhiên 0-4 câu)</span>
+                  </div>
+                  <div class="mode-feature-item">
+                    <span class="feat-icon">⏱️</span>
+                    <span><strong>31 phút đếm ngược</strong> (không cưỡng chế nộp bài)</span>
+                  </div>
+                </div>
+
+                <button class="start-exam-btn btn-start-full" id="btn-start-full">
+                  <span>🚀 Bắt đầu làm bài Full (40 câu)</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Card Đề Short -->
+              <div class="exam-mode-card card-short" id="exam-start-short-card">
+                <div class="mode-header">
+                  <div class="mode-badge-wrap">
+                    <span class="mode-pill mode-pill-short">BÀI THI CẤP TỐC</span>
+                    <span class="mode-timer-pill">⏱️ 9 phút</span>
+                  </div>
+                  <h3 class="mode-title">Short Exam — 10 Câu Tốc Độ</h3>
+                  <p class="mode-desc">
+                    Luyện tập nhanh gọn trong giờ nghỉ. 10 câu được bốc hoàn toàn ngẫu nhiên từ kho tổng hợp hơn 1600 câu của cả 15 Day, tối đa 1 câu tự luận (ngẫu nhiên 0 hoặc 1 câu).
+                  </p>
+                </div>
+
+                <div class="mode-features-list">
+                  <div class="mode-feature-item">
+                    <span class="feat-icon">⚡</span>
+                    <span><strong>10 câu hỏi</strong> bốc random từ kho hơn 1600 câu</span>
+                  </div>
+                  <div class="mode-feature-item">
+                    <span class="feat-icon">🎲</span>
+                    <span><strong>Bất kỳ Day nào</strong>, không cố định số lượng mỗi Day</span>
+                  </div>
+                  <div class="mode-feature-item">
+                    <span class="feat-icon">✍️</span>
+                    <span><strong>Tối đa 1 câu tự luận</strong> (ngẫu nhiên 0 hoặc 1 câu)</span>
+                  </div>
+                  <div class="mode-feature-item">
+                    <span class="feat-icon">⏱️</span>
+                    <span><strong>9 phút đếm ngược</strong> (nhắc nhở tốc độ)</span>
+                  </div>
+                </div>
+
+                <button class="start-exam-btn btn-start-short" id="btn-start-short">
+                  <span>⚡ Bắt đầu làm bài Short (10 câu)</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- PHẦN THỐNG KÊ THI THỬ & PHÂN TÍCH ĐIỂM YẾU TỪNG DAY -->
+            <div class="exam-stats-dashboard" id="exam-stats-dashboard">
+              <div class="section-heading-row">
+                <div class="heading-title-col">
+                  <h3 class="exam-section-title">📊 Thống Kê Thi Thử & Phân Tích Điểm Yếu Từng Day</h3>
+                  <p class="exam-section-sub">
+                    Tổng hợp từ tất cả các bài thi thử (Full & Short) đã nộp. Dựa vào đây bạn sẽ biết rõ mình đang yếu hoặc hổng kiến thức ở Day nào để tập trung ôn tập lại.
+                  </p>
+                </div>
+                <button class="reset-exam-stats-btn" id="reset-exam-stats-btn" title="Xóa lịch sử thống kê thi thử để tính lại từ đầu">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                  <span>Xóa lịch sử thống kê thi thử</span>
+                </button>
+              </div>
+
+              <!-- 4 Thẻ KPI Tổng quát -->
+              <div class="exam-kpi-grid">
+                <div class="exam-kpi-card">
+                  <div class="kpi-icon-wrap kpi-blue">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  </div>
+                  <div class="kpi-info">
+                    <span class="kpi-label">Số câu hỏi đã làm thi thử</span>
+                    <span class="kpi-value" id="kpi-total-questions">0</span>
+                  </div>
+                </div>
+
+                <div class="exam-kpi-card">
+                  <div class="kpi-icon-wrap kpi-green">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <div class="kpi-info">
+                    <span class="kpi-label">Số câu làm đúng (Trắc nghiệm)</span>
+                    <span class="kpi-value text-emerald" id="kpi-correct-questions">0</span>
+                  </div>
+                </div>
+
+                <div class="exam-kpi-card">
+                  <div class="kpi-icon-wrap kpi-purple">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                  </div>
+                  <div class="kpi-info">
+                    <span class="kpi-label">Tỷ lệ chính xác tổng thể</span>
+                    <span class="kpi-value" id="kpi-accuracy-rate">0%</span>
+                  </div>
+                </div>
+
+                <div class="exam-kpi-card">
+                  <div class="kpi-icon-wrap kpi-amber">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </div>
+                  <div class="kpi-info">
+                    <span class="kpi-label">Số lượt thi đã hoàn thành</span>
+                    <span class="kpi-value" id="kpi-total-exams">0</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bảng Thống kê 15 Day (Phát hiện điểm yếu) -->
+              <div class="exam-days-table-container">
+                <table class="exam-days-table">
+                  <thead>
+                    <tr>
+                      <th class="th-day">Ngày học (Day)</th>
+                      <th class="th-selected">Số câu đã gặp</th>
+                      <th class="th-correct">Số câu làm đúng</th>
+                      <th class="th-rate">Tỷ lệ chính xác</th>
+                      <th class="th-status">Đánh giá điểm yếu</th>
+                    </tr>
+                  </thead>
+                  <tbody id="exam-days-stats-tbody">
+                    <!-- Render động từ JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. MÀN HÌNH ĐANG LÀM BÀI THI (ACTIVE EXAM SCREEN) -->
+          <div class="exam-screen" id="exam-active-screen" style="display: none;">
+            <!-- Sticky Header của bài thi -->
+            <div class="exam-sticky-topbar">
+              <div class="exam-bar-left">
+                <span class="exam-active-badge" id="exam-active-title-pill">BÀI THI FULL</span>
+                <span class="exam-active-progress-text" id="exam-answered-counter">Đã làm: 0/40 câu</span>
+              </div>
+
+              <!-- Bộ đếm giờ mô phỏng (Countdown Timer) -->
+              <div class="exam-timer-widget" id="exam-timer-widget">
+                <span class="timer-icon">⏱️</span>
+                <div class="timer-display">
+                  <span class="timer-text" id="exam-timer-text">31:00</span>
+                  <span class="timer-subtext" id="exam-timer-subtext">Thời gian còn lại</span>
+                </div>
+              </div>
+
+              <div class="exam-bar-actions">
+                <!-- Nút Hủy bài thi (Không lưu thống kê) -->
+                <button class="exam-cancel-btn" id="btn-cancel-exam" title="Hủy bỏ việc làm bài thi (không lưu vào thống kê)">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  <span>Hủy bài thi</span>
+                </button>
+
+                <!-- Nút Nộp bài thi -->
+                <button class="exam-submit-btn" id="btn-submit-exam">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Nộp bài thi</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Bảng Palette câu hỏi nhanh (1..40 / 1..10) -->
+            <div class="exam-nav-palette-wrap">
+              <div class="palette-header">
+                <span class="palette-title">Danh sách câu hỏi:</span>
+                <div class="palette-legend">
+                  <span class="leg-item"><span class="leg-box leg-unanswered"></span> Chưa làm</span>
+                  <span class="leg-item"><span class="leg-box leg-answered"></span> Đã chọn</span>
+                </div>
+              </div>
+              <div class="exam-palette-grid" id="exam-palette-grid">
+                <!-- Render động các nút câu hỏi 1, 2, ... -->
+              </div>
+            </div>
+
+            <!-- Danh sách câu hỏi thi thử cuộn mượt -->
+            <div class="exam-questions-stream" id="exam-questions-stream">
+              <!-- Render động từ JS -->
+            </div>
+          </div>
+
+          <!-- 3. MÀN HÌNH KẾT QUẢ SAU KHI NỘP BÀI (RESULTS SCREEN) -->
+          <div class="exam-screen" id="exam-result-screen" style="display: none;">
+            <div class="exam-result-card">
+              <div class="result-badge-top">
+                <span class="result-icon-glow" id="result-icon-glow">🏆</span>
+                <span class="result-status-tag" id="result-status-tag">HOÀN THÀNH BÀI THI</span>
+              </div>
+
+              <h2 class="result-title" id="result-title">Kết Quả Bài Thi Thử</h2>
+              <p class="result-subtitle" id="result-subtitle">Điểm số và thống kê chi tiết lượt thi của bạn</p>
+
+              <!-- Vòng tròn hoặc Thẻ điểm số nổi bật -->
+              <div class="result-score-highlight">
+                <div class="score-number-row">
+                  <span class="score-big" id="result-score-number">0</span>
+                  <span class="score-slash">/</span>
+                  <span class="score-total" id="result-score-total">0</span>
+                </div>
+                <div class="score-percent-badge" id="result-score-percent">0% chính xác</div>
+              </div>
+
+              <!-- Thống kê chi tiết bài thi vừa nộp -->
+              <div class="result-breakdown-grid">
+                <div class="breakdown-item">
+                  <span class="b-label">Thời gian làm bài</span>
+                  <span class="b-val" id="result-time-taken">00:00</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="b-label">Số câu đúng (Trắc nghiệm)</span>
+                  <span class="b-val text-emerald" id="result-correct-count">0 câu</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="b-label">Số câu chưa chính xác</span>
+                  <span class="b-val text-ruby" id="result-incorrect-count">0 câu</span>
+                </div>
+                <div class="breakdown-item">
+                  <span class="b-label">Câu tự luận tham khảo</span>
+                  <span class="b-val text-sky" id="result-essay-count">0 câu</span>
+                </div>
+              </div>
+
+              <!-- Ghi chú về câu tự luận -->
+              <div class="essay-grading-note">
+                💡 <strong>Lưu ý về tự luận:</strong> Các câu tự luận mặc định 0 điểm trong bài thi thử do không chấm điểm tự động. Bạn hãy bấm <em>"Xem lại bài làm"</em> bên dưới để đọc câu trả lời mẫu chuẩn và lời giải thích chi tiết từ AI.
+              </div>
+
+              <!-- Nút hành động kết quả -->
+              <div class="result-actions-row">
+                <button class="result-review-btn" id="btn-review-exam">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <span>Xem lại chi tiết bài làm & Đáp án</span>
+                </button>
+
+                <button class="result-new-exam-btn" id="btn-new-exam">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <polyline points="23 20 23 14 17 14"></polyline>
+                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                  </svg>
+                  <span>Về Sảnh Thi & Thống Kê</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. MÀN HÌNH XEM LẠI BÀI LÀM (REVIEW SCREEN) -->
+          <div class="exam-screen" id="exam-review-screen" style="display: none;">
+            <div class="review-top-bar">
+              <button class="back-to-results-btn" id="btn-back-to-lobby">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Về Sảnh Thi Thử & Thống Kê</span>
+              </button>
+
+              <div class="review-title-col">
+                <h3 class="review-header-title">Xem Lại Bài Thi Thử</h3>
+                <span class="review-header-sub" id="review-exam-summary-text">Hiển thị đầy đủ đáp án chuẩn & giải thích chi tiết</span>
+              </div>
+
+              <div class="review-filter-pills">
+                <span class="review-pill active" data-rfilter="all">Tất cả (<span id="rfilter-all-count">0</span>)</span>
+                <span class="review-pill pill-correct" data-rfilter="correct">Đúng (<span id="rfilter-correct-count">0</span>)</span>
+                <span class="review-pill pill-incorrect" data-rfilter="incorrect">Sai (<span id="rfilter-incorrect-count">0</span>)</span>
+                <span class="review-pill pill-essay" data-rfilter="essay">Tự luận (<span id="rfilter-essay-count">0</span>)</span>
+              </div>
+            </div>
+
+            <!-- Danh sách câu hỏi xem lại -->
+            <div class="exam-review-stream" id="exam-review-stream">
+              <!-- Render động từ JS -->
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Script xử lý logic tương tác Offline -->
+  <script src="app.js?v=20261021_contrast_v4"></script>
+</body>
+</html>
