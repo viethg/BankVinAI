@@ -115,6 +115,8 @@
     examTimerSubtext: document.getElementById('exam-timer-subtext'),
     btnCancelExam: document.getElementById('btn-cancel-exam'),
     btnSubmitExam: document.getElementById('btn-submit-exam'),
+    btnCancelExamBottom: document.getElementById('btn-cancel-exam-bottom'),
+    btnSubmitExamBottom: document.getElementById('btn-submit-exam-bottom'),
     examPaletteGrid: document.getElementById('exam-palette-grid'),
     examQuestionsStream: document.getElementById('exam-questions-stream'),
     resultScoreNumber: document.getElementById('result-score-number'),
@@ -2695,6 +2697,8 @@
     if (DOM.btnStartShort) DOM.btnStartShort.addEventListener('click', () => startExam('short'));
     if (DOM.btnCancelExam) DOM.btnCancelExam.addEventListener('click', cancelExam);
     if (DOM.btnSubmitExam) DOM.btnSubmitExam.addEventListener('click', submitExam);
+    if (DOM.btnCancelExamBottom) DOM.btnCancelExamBottom.addEventListener('click', cancelExam);
+    if (DOM.btnSubmitExamBottom) DOM.btnSubmitExamBottom.addEventListener('click', submitExam);
     if (DOM.btnReviewExam) DOM.btnReviewExam.addEventListener('click', () => renderExamReview('all'));
     if (DOM.btnNewExam) DOM.btnNewExam.addEventListener('click', showExamLobby);
     if (DOM.btnBackToLobby) DOM.btnBackToLobby.addEventListener('click', showExamLobby);
