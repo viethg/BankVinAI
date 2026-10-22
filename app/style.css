@@ -404,6 +404,11 @@ html, body {
   color: var(--text-main);
 }
 
+[data-theme="dark"] .theme-icon-dark { display: inline; }
+[data-theme="dark"] .theme-icon-light { display: none; }
+[data-theme="light"] .theme-icon-dark { display: none; }
+[data-theme="light"] .theme-icon-light { display: inline; }
+
 .sidebar-backup-actions {
   display: flex;
   gap: 8px;

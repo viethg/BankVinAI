@@ -165,7 +165,7 @@
   // --- Tải Tùy chọn ban đầu từ LocalStorage (Để UI hiển thị tức thì không delay) ---
   function loadStoredPreferences() {
     // 1. Theme
-    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'dark';
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateThemeButtonText(savedTheme);
 
@@ -320,7 +320,7 @@
         examStats: state.examStats,
         currentDayId: state.currentDayId,
         currentTab: state.currentTab,
-        theme: document.documentElement.getAttribute('data-theme') || 'dark',
+        theme: document.documentElement.getAttribute('data-theme') || 'light',
         last_saved: new Date().toISOString()
       };
 
@@ -2677,7 +2677,7 @@
   function setupEventListeners() {
     // 1. Theme Toggle
     DOM.themeToggleBtn.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem(STORAGE_KEYS.THEME, next);
@@ -2921,7 +2921,7 @@
       examStats: state.examStats,
       currentDayId: state.currentDayId,
       currentTab: state.currentTab,
-      theme: document.documentElement.getAttribute('data-theme') || 'dark'
+      theme: document.documentElement.getAttribute('data-theme') || 'light'
     };
     const jsonStr = JSON.stringify(backupData, null, 2);
     const blob = new Blob([jsonStr], { type: 'application/json' });
